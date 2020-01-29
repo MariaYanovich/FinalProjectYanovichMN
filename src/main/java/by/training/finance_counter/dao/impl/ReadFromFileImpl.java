@@ -9,6 +9,7 @@ import by.training.finance_counter.exception.DAOException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.zip.DataFormatException;
 
 public class ReadFromFileImpl implements ReadFromFile {
 
@@ -57,7 +58,7 @@ public class ReadFromFileImpl implements ReadFromFile {
         return usersAndPasswords;
     }
 
-    public static void replaceStringInFile(String fileName, String username, String replacement) throws IOException {
+    public static void replaceStringInFile(String fileName, String username, String replacement) throws DAOException {
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileName));
             String line = "";
@@ -84,13 +85,13 @@ public class ReadFromFileImpl implements ReadFromFile {
             bw.write(fileContent2);
             bw.close();
         } catch (IOException e) {
-
+            throw new DAOException(e);
         }
 
     }
 
 
-    public static void changeStringInFileByAddingInTheEnd(String fileName, String username, String replacement) throws IOException {
+    public static void changeStringInFileByAddingInTheEnd(String fileName, String username, String replacement) throws DAOException {
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileName));
             String line = "";
@@ -110,12 +111,12 @@ public class ReadFromFileImpl implements ReadFromFile {
             bw.write(FileContent);
             bw.close();
         } catch (IOException e) {
-
+            throw new DAOException(e);
         }
 
     }
 
-    public static void changeStringInFileByRemovingNumber(String fileName, String username, String numberToDelete) throws IOException {
+    public static void changeStringInFileByRemovingNumber(String fileName, String username, String numberToDelete) throws DAOException {
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileName));
             String line = "";
@@ -146,12 +147,12 @@ public class ReadFromFileImpl implements ReadFromFile {
             bw.write(FileContent);
             bw.close();
         } catch (IOException e) {
-
+            throw new DAOException(e);
         }
 
     }
 
-    public static void changeStringInFileToZero(String fileName, String username) throws IOException {
+    public static void changeStringInFileToZero(String fileName, String username) throws DAOException {
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileName));
             String line = "";
@@ -182,12 +183,12 @@ public class ReadFromFileImpl implements ReadFromFile {
             bw.write(FileContent);
             bw.close();
         } catch (IOException e) {
-
+            throw new DAOException(e);
         }
 
     }
 
-    public static void changeStringInFileByUpdatingNumber(String fileName, String username, String numberToUpdate, String otherNumber) throws IOException {
+    public static void changeStringInFileByUpdatingNumber(String fileName, String username, String numberToUpdate, String otherNumber) throws DAOException {
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileName));
             String line = "";
@@ -218,7 +219,7 @@ public class ReadFromFileImpl implements ReadFromFile {
             bw.write(FileContent);
             bw.close();
         } catch (IOException e) {
-
+            throw new DAOException(e);
         }
     }
 }
