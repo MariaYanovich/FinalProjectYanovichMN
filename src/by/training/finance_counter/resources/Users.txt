@@ -1,0 +1,6 @@
+
+anna1 cat1
+sasha2 cat3
+sasha 345
+sasha4 cat
+anya 4576
