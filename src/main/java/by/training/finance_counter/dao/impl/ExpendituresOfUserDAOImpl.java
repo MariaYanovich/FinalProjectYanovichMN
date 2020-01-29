@@ -20,62 +20,56 @@ public class ExpendituresOfUserDAOImpl implements ExpendituresOfUserDAO {
         this.userDAO = userDAO;
     }
 
-    public void addExpenditure(double expenditure) {
+    public void addExpenditure(double expenditure) throws DAOException {
         try {
             if (userDAO.isInSystem() == false) {
-                throw new DAOException("not authorized");
+                throw new DAOException("Not authorized");
             } else {
                 changeStringInFileByAddingInTheEnd(expendituresFile, userDAO.getCurrentUser(), String.valueOf(expenditure));
                 Expenditure expenditureOfUser = new Expenditure(expenditure);
                 userDAO.getCurrentUserExpenditures().addExpenditure(expenditureOfUser);
             }
-        } catch (DAOException e) {
-
         } catch (IOException e) {
-
+            throw new DAOException();
         }
 
     }
 
 
-    public void deleteExpenditure(double expenditure) {
+    public void deleteExpenditure(double expenditure) throws DAOException {
         try {
             if (userDAO.isInSystem() == false) {
-                throw new DAOException("not authorized");
+                throw new DAOException("Not authorized");
             } else {
                 changeStringInFileByRemovingNumber(expendituresFile, userDAO.getCurrentUser(), String.valueOf(expenditure));
                 Expenditure expenditureOfUser = new Expenditure(expenditure);
                 userDAO.getCurrentUserExpenditures().deleteExpenditure(expenditureOfUser);
             }
-        } catch (DAOException e) {
-
         } catch (IOException e) {
-
+            throw new DAOException();
         }
 
     }
 
 
-    public void cleanAllExpenditures() {
+    public void cleanAllExpenditures() throws DAOException {
         try {
             if (false == userDAO.isInSystem()) {
-                throw new DAOException("not authorized");
+                throw new DAOException("Not authorized");
             } else {
                 changeStringInFileToZero(expendituresFile, userDAO.getCurrentUser());
                 userDAO.getCurrentUserExpenditures().cleanAllExpenditures();
             }
-        } catch (DAOException e) {
-
         } catch (IOException e) {
-
+            throw new DAOException();
         }
 
     }
 
-    public void update(double oldExpenditure, double newExpenditure) {
+    public void update(double oldExpenditure, double newExpenditure) throws DAOException {
         try {
             if (!userDAO.isInSystem()) {
-                throw new DAOException("not authorized");
+                throw new DAOException("Not authorized");
             } else {
                 changeStringInFileByUpdatingNumber(expendituresFile,
                         userDAO.getCurrentUser(), String.valueOf(oldExpenditure), String.valueOf(newExpenditure));
@@ -83,30 +77,34 @@ public class ExpendituresOfUserDAOImpl implements ExpendituresOfUserDAO {
                 Expenditure newExpenditureOfUser = new Expenditure(newExpenditure);
                 userDAO.getCurrentUserExpenditures().update(oldExpenditureOfUser, newExpenditureOfUser);
             }
-        } catch (DAOException e) {
-
         } catch (IOException e) {
-
+            throw new DAOException();
         }
     }
 
-    public double sumAllExpenditures() {
+    public double sumAllExpenditures() throws DAOException {
         double sum = 0;
         try {
             if (!userDAO.isInSystem()) {
-                throw new DAOException("not authorized");
+                throw new DAOException("Not authorized");
             } else {
                 sum = userDAO.getCurrentUserExpenditures().sumAllExpenditures();
 
             }
-        } catch (DAOException e) {
-
+        } catch (IOException e) {
+            throw new DAOException();
         }
         return sum;
     }
 
     @Override
     public String toString() {
-        return userDAO.getCurrentUserExpenditures().toString();
+
+        try {
+            return userDAO.getCurrentUserExpenditures().toString();
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

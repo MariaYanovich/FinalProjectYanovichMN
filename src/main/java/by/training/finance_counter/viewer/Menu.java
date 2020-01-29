@@ -12,7 +12,7 @@ public class Menu {
         Scanner scan = new Scanner(System.in);
         int x = 0;
         String s = "";
-
+        double y = 0, z = 0;
         while (!"3".equals(s)) {
             System.out.println("1. For authorization input 1");
             System.out.println("2. For registration input 2");
@@ -43,17 +43,31 @@ public class Menu {
                                 System.out.println("Incorrect input");
                             }
                             switch (x) {
+
                                 case 1:
                                     System.out.println("\nEnter expenditure: ");
-                                    commands.addExpenditure(scan.nextDouble());
+                                    s = scan.next();
+                                    try {
+                                        y = Double.parseDouble(s);
+                                        commands.addExpenditure(y);
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("Incorrect input");
+                                    }
                                     System.out.println(commands.toString());
                                     break;
                                 case 2:
                                     System.out.println("\nEnter expenditure: ");
-                                    commands.deleteExpenditure(scan.nextDouble());
+                                    s = scan.next();
+                                    try {
+                                        y = Double.parseDouble(s);
+                                        commands.deleteExpenditure(y);
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("Incorrect input");
+                                    }
                                     System.out.println(commands.toString());
                                     break;
                                 case 3:
+                                    commands.cleanAllExpenditures();
                                     System.out.println("\nAll expenditures are clear:"
                                             + "\n" + commands.toString());
                                     break;
@@ -63,7 +77,13 @@ public class Menu {
                                     break;
                                 case 5:
                                     System.out.println("\nEnter old expenditure and new expenditure: ");
-                                    commands.update(scan.nextDouble(), scan.nextDouble());
+                                    try {
+                                        y = Double.parseDouble(scan.next());
+                                        z = Double.parseDouble(scan.next());
+                                        commands.update(y, z);
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("Incorrect input");
+                                    }
                                     System.out.println(commands.toString());
                                     break;
                                 case 6:

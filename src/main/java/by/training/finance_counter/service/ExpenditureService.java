@@ -1,15 +1,17 @@
 package by.training.finance_counter.service;
 
+import by.training.finance_counter.exception.ServiceException;
+
 public interface ExpenditureService {
-    void addExpenditure(double expenditure);
+    void addExpenditure(double expenditure) throws ServiceException;
 
-    void deleteExpenditure(double expenditure);
+    void deleteExpenditure(double expenditure) throws ServiceException;
 
-    void cleanAllExpenditures();
+    void cleanAllExpenditures() throws ServiceException;
 
-    void update(double expenditureOfUser, double newExpenditureOfUser);
+    void update(double expenditureOfUser, double newExpenditureOfUser) throws ServiceException;
 
-    double sumAllExpenditures();
+    double sumAllExpenditures() throws ServiceException;
 
     String toString();
 }

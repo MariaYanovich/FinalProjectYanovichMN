@@ -47,7 +47,9 @@ public class ExpenditureListOfUser implements Serializable {
     }
 
     public void update(Expenditure expenditure1, Expenditure expenditure2) {
-        expendituresOfUser.set(expendituresOfUser.indexOf(expenditure1), expenditure2);
+        if (expendituresOfUser.contains(expenditure1)) {
+            expendituresOfUser.set(expendituresOfUser.indexOf(expenditure1), expenditure2);
+        }
     }
 
     public double sumAllExpenditures() {

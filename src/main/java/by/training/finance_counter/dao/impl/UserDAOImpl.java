@@ -15,25 +15,28 @@ import static by.training.finance_counter.dao.impl.ReadFromFileImpl.replaceStrin
 
 public class UserDAOImpl implements UserDAO {
     private AllUsersLists allUsersLists;
-    boolean isInSystem = false;
+    private boolean isInSystem = false;
     private String currentUser = "";
     public static String expendituresFile = ".\\src\\main\\resources\\Expenditures.txt";
     public static String usersFile = ".\\src\\main\\resources\\Users.txt";
 
     public UserDAOImpl() {
 
-        readUsersLists();
+        try {
+            readUsersLists();
+        } catch (IOException e) {
 
+        }
     }
 
 
-    public String getCurrentUser() {
+    public String getCurrentUser() throws DAOException {
         try {
             if (isInSystem == false) {
-                throw new DAOException("not authorized");
+                throw new DAOException("Not authorized");
             }
-        } catch (DAOException e) {
-
+        } catch (IOException e) {
+            throw new DAOException(e);
         }
         return currentUser;
     }
@@ -50,14 +53,14 @@ public class UserDAOImpl implements UserDAO {
         isInSystem = inSystem;
     }
 
-    public AllUsersLists getAllUsersLists() {
+    public AllUsersLists getAllUsersLists() throws DAOException {
 
         try {
             if (allUsersLists == null) {
-                throw new DAOException("files with data about users are empty");
+                throw new DAOException("Files with data about users are empty");
             }
-        } catch (DAOException e) {
-
+        } catch (IOException e) {
+            throw new DAOException(e);
         }
         return allUsersLists;
     }
@@ -66,28 +69,31 @@ public class UserDAOImpl implements UserDAO {
         this.allUsersLists = allUsersLists;
     }
 
-    private void readUsersLists() {
-        ReadFromFileImpl fileTxtUserInform = new ReadFromFileImpl();
-        allUsersLists = new AllUsersLists(fileTxtUserInform.readUsersAndPasswordsFromTxtFile(usersFile),
-                fileTxtUserInform.readUsersAndExpendituresFromTxtFile(expendituresFile));
+    private void readUsersLists() throws DAOException {
+        try {
+            ReadFromFileImpl fileTxtUserInform = new ReadFromFileImpl();
+            allUsersLists = new AllUsersLists(fileTxtUserInform.readUsersAndPasswordsFromTxtFile(usersFile),
+                    fileTxtUserInform.readUsersAndExpendituresFromTxtFile(expendituresFile));
+        } catch (IOException e) {
+            throw new DAOException(e);
+        }
     }
 
-    public ExpenditureListOfUser getCurrentUserExpenditures() {
+    public ExpenditureListOfUser getCurrentUserExpenditures() throws DAOException {
         try {
             if (allUsersLists != null && isInSystem) {
                 return allUsersLists.getUserAndExpendituresFromList(currentUser);
             } else {
-                throw new DAOException("not authorized or input files are empty");
+                throw new DAOException("Not authorized or input files are empty");
             }
 
-        } catch (DAOException e) {
-
+        } catch (IOException e) {
+            throw new DAOException(e);
         }
-        return null;
     }
 
     @Override
-    public void signIn(String username, String password) {
+    public void signIn(String username, String password) throws DAOException {
         try {
             if (allUsersLists.isContainUsername(username)
                     && allUsersLists.isContainsPassword(password)) {
@@ -95,21 +101,21 @@ public class UserDAOImpl implements UserDAO {
                 currentUser = username;
                 System.out.println(allUsersLists.getUserAndExpendituresFromList(username));
             } else {
-                throw new DAOException("not such user");
+                throw new DAOException("Not such user");
             }
-        } catch (DAOException e) {
-
+        } catch (IOException e) {
+            throw new DAOException(e);
         }
 
     }
 
 
     @Override
-    public void registration(String username, String password) {
+    public void registration(String username, String password) throws DAOException {
         try {
             for (User item : allUsersLists.getListOfUsersAndPasswords()) {
                 if (item.getUsername().equals(username)) {
-                    throw new DAOException("user with this name is already exists");
+                    throw new DAOException("User with this name is already exists");
                 }
             }
             FileWriter fw1 = new FileWriter(usersFile, true);
@@ -126,15 +132,13 @@ public class UserDAOImpl implements UserDAO {
             allUsersLists.getListOfUsersAndExpenditures().
                     add(allUsersLists.sizeOfListOfUsersAndExpenditures(), user);
             allUsersLists.getListOfUsersAndPasswords().add(user.getUser());
-        } catch (DAOException e) {
-
         } catch (IOException e) {
-
+            throw new DAOException(e);
         }
     }
 
 
-    public void deleteAccount() {
+    public void deleteAccount() throws DAOException {
         try {
             if (isInSystem) {
                 replaceStringInFile(expendituresFile, currentUser, "");
@@ -144,10 +148,10 @@ public class UserDAOImpl implements UserDAO {
                     allUsersLists.removeUser(userTMP.getUser(), userTMP);
                 }
             } else {
-                throw new DAOException("not authorized");
+                throw new DAOException("Not authorized");
             }
         } catch (IOException e) {
-
+            throw new DAOException(e);
         }
     }
 

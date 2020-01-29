@@ -1,16 +1,18 @@
 package by.training.finance_counter.dao;
 
+import by.training.finance_counter.exception.DAOException;
+
 public interface ExpendituresOfUserDAO {
 
-    void addExpenditure(double expenditure);
+    void addExpenditure(double expenditure) throws DAOException;
 
-    void deleteExpenditure(double expenditure);
+    void deleteExpenditure(double expenditure) throws DAOException;
 
-    void cleanAllExpenditures();
+    void cleanAllExpenditures() throws DAOException;
 
-    void update(double expenditureOfUser, double newExpenditureOfUser);
+    void update(double expenditureOfUser, double newExpenditureOfUser) throws DAOException;
 
-    double sumAllExpenditures();
+    double sumAllExpenditures() throws DAOException;
 
     String toString();
 

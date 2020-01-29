@@ -1,6 +1,5 @@
-
 anna1 cat1
 sasha2 cat3
+mary3 mar34
 sasha 345
 sasha4 cat
-anya 4576

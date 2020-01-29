@@ -1,6 +1,7 @@
 package by.training.finance_counter.service.impl;
 
 import by.training.finance_counter.dao.UserDAO;
+import by.training.finance_counter.exception.DAOException;
 import by.training.finance_counter.factory.DAOFactory;
 import by.training.finance_counter.service.ClientService;
 import by.training.finance_counter.exception.ServiceException;
@@ -8,16 +9,16 @@ import by.training.finance_counter.exception.ServiceException;
 
 public class ClientServiceImpl implements ClientService {
 
-    public void signIn(String username, String password) {
+    public void signIn(String username, String password) throws ServiceException {
         try {
             UserDAO userDAO = getUserDAO();
             if (userDAO != null) {
                 userDAO.signIn(username, password);
             } else {
-                throw new ServiceException("user doesn't exist");
+                throw new ServiceException("User doesn't exist");
             }
-        } catch (ServiceException e) {
-
+        } catch (DAOException e) {
+            throw new ServiceException(e);
         }
 
     }
@@ -27,44 +28,49 @@ public class ClientServiceImpl implements ClientService {
         return factory.getTxtUserImpl();
     }
 
-    public void registration(String username, String password) {
+    public void registration(String username, String password) throws ServiceException {
         try {
             if (username == null || username.equals("") || password == null || password.equals(""))
-                throw new ServiceException("not valid username and password");
+                throw new ServiceException("Not valid username and password");
             UserDAO userDAO = getUserDAO();
             userDAO.registration(username, password);
-        } catch (ServiceException e) {
-
+        } catch (DAOException e) {
+            throw new ServiceException(e);
         }
 
     }
 
-    public void deleteAccount() {
+    public void deleteAccount() throws ServiceException {
         try {
             UserDAO userDAO = getUserDAO();
             if (userDAO != null && userDAO.isInSystem()) {
                 userDAO.deleteAccount();
             } else {
-                throw new ServiceException("user doesn't exist");
+                throw new ServiceException("User doesn't exist");
             }
-        } catch (ServiceException e) {
-
+        } catch (DAOException e) {
+            throw new ServiceException(e);
         }
     }
 
-    public void signOut() {
+    public void signOut() throws ServiceException {
         try {
             UserDAO userDAO = getUserDAO();
             if (userDAO.isInSystem()) {
                 userDAO.signOut();
-            } else throw new ServiceException("user doesn't authorized");
+            } else throw new ServiceException("User doesn't authorized");
 
-        } catch (ServiceException e) {
+        } catch (DAOException e) {
+            throw new ServiceException(e);
         }
     }
 
-    public boolean isInSystem() {
-        UserDAO userDAO = getUserDAO();
-        return userDAO.isInSystem();
+    public boolean isInSystem() throws ServiceException {
+        try {
+            UserDAO userDAO = getUserDAO();
+            return userDAO.isInSystem();
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
     }
 }

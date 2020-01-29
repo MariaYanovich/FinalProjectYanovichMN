@@ -1,14 +1,16 @@
 package by.training.finance_counter.service;
 
+import by.training.finance_counter.exception.ServiceException;
+
 public interface ClientService {
-    void signIn(String username, String password);
+    void signIn(String username, String password) throws ServiceException;
 
-    void registration(String username, String password);
+    void registration(String username, String password) throws ServiceException;
 
-    void deleteAccount();
+    void deleteAccount() throws ServiceException;
 
-    void signOut();
+    void signOut() throws ServiceException;
 
-    boolean isInSystem();
+    boolean isInSystem() throws ServiceException;
 }
 

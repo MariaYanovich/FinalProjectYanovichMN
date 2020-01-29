@@ -4,6 +4,7 @@ import by.training.finance_counter.bean.Expenditure;
 import by.training.finance_counter.bean.ExpenditureListOfUser;
 import by.training.finance_counter.bean.User;
 import by.training.finance_counter.dao.ReadFromFile;
+import by.training.finance_counter.exception.DAOException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.Scanner;
 
 public class ReadFromFileImpl implements ReadFromFile {
 
-    public ArrayList<ExpenditureListOfUser> readUsersAndExpendituresFromTxtFile(String wayToFile) {
+    public ArrayList<ExpenditureListOfUser> readUsersAndExpendituresFromTxtFile(String wayToFile) throws DAOException {
         ArrayList<ExpenditureListOfUser> usersAndExpenditures = new ArrayList<>();
         try {
             Scanner sc = new Scanner(new File(wayToFile));
@@ -25,27 +26,33 @@ public class ReadFromFileImpl implements ReadFromFile {
                 for (Double item : tmp) {
                     list.add(new Expenditure(item));
                 }
+                if (list.isEmpty() || str.isEmpty()) {
+                    throw new DAOException();
+                }
                 ExpenditureListOfUser expenditureListOfUser = new ExpenditureListOfUser(new User(str), list);
                 usersAndExpenditures.add(expenditureListOfUser);
             }
         } catch (IOException e) {
-
+            throw new DAOException();
         }
         return usersAndExpenditures;
     }
 
-    public ArrayList<User> readUsersAndPasswordsFromTxtFile(String wayToFile) {
+    public ArrayList<User> readUsersAndPasswordsFromTxtFile(String wayToFile) throws DAOException {
         ArrayList<User> usersAndPasswords = new ArrayList<>();
         try {
             Scanner sc = new Scanner(new File(wayToFile));
             while (sc.hasNextLine()) {
                 String str1 = sc.next();
                 String str2 = sc.next();
+                if (str1.isEmpty() || str2.isEmpty()) {
+                    throw new DAOException();
+                }
                 User user = new User(str1, str2);
                 usersAndPasswords.add(user);
             }
         } catch (IOException e) {
-
+            throw new DAOException(e);
         }
         return usersAndPasswords;
     }
