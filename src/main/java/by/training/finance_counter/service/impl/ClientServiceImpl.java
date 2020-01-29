@@ -1,9 +1,9 @@
 package by.training.finance_counter.service.impl;
 
 import by.training.finance_counter.dao.UserDAO;
-import by.training.finance_counter.dao.factory.DAOFactory;
+import by.training.finance_counter.factory.DAOFactory;
 import by.training.finance_counter.service.ClientService;
-import by.training.finance_counter.service.exception.ServiceException;
+import by.training.finance_counter.exception.ServiceException;
 
 
 public class ClientServiceImpl implements ClientService {

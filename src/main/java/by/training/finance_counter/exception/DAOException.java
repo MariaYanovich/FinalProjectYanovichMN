@@ -1,4 +1,4 @@
-package by.training.finance_counter.dao.exception;
+package by.training.finance_counter.exception;
 
 import java.io.IOException;
 

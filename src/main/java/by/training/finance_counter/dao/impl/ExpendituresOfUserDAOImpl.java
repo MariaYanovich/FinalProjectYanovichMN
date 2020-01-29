@@ -2,7 +2,7 @@ package by.training.finance_counter.dao.impl;
 
 import by.training.finance_counter.bean.Expenditure;
 import by.training.finance_counter.dao.ExpendituresOfUserDAO;
-import by.training.finance_counter.dao.exception.DAOException;
+import by.training.finance_counter.exception.DAOException;
 
 import java.io.IOException;
 

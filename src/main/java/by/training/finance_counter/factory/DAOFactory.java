@@ -1,4 +1,4 @@
-package by.training.finance_counter.dao.factory;
+package by.training.finance_counter.factory;
 
 import by.training.finance_counter.dao.ExpendituresOfUserDAO;
 import by.training.finance_counter.dao.UserDAO;

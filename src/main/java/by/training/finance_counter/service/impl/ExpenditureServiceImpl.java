@@ -1,7 +1,7 @@
 package by.training.finance_counter.service.impl;
 
 import by.training.finance_counter.dao.ExpendituresOfUserDAO;
-import by.training.finance_counter.dao.factory.DAOFactory;
+import by.training.finance_counter.factory.DAOFactory;
 import by.training.finance_counter.service.ExpenditureService;
 
 public class ExpenditureServiceImpl implements ExpenditureService {

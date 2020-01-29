@@ -5,7 +5,7 @@ import by.training.finance_counter.bean.ExpenditureListOfUser;
 import by.training.finance_counter.bean.User;
 import by.training.finance_counter.bean.AllUsersLists;
 import by.training.finance_counter.dao.UserDAO;
-import by.training.finance_counter.dao.exception.DAOException;
+import by.training.finance_counter.exception.DAOException;
 
 
 import java.io.*;
@@ -17,8 +17,8 @@ public class UserDAOImpl implements UserDAO {
     private AllUsersLists allUsersLists;
     boolean isInSystem = false;
     private String currentUser = "";
-    public static String expendituresFile = ".\\src\\main\\java\\by\\training\\finance_counter\\resources\\Expenditures.txt";
-    public static String usersFile = ".\\src\\main\\java\\by\\training\\finance_counter\\resources\\Users.txt";
+    public static String expendituresFile = ".\\src\\main\\resources\\Expenditures.txt";
+    public static String usersFile = ".\\src\\main\\resources\\Users.txt";
 
     public UserDAOImpl() {
 
@@ -132,7 +132,6 @@ public class UserDAOImpl implements UserDAO {
 
         }
     }
-
 
 
     public void deleteAccount() {
