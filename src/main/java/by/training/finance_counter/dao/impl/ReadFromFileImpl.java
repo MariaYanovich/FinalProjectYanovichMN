@@ -9,9 +9,10 @@ import by.training.finance_counter.exception.DAOException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.zip.DataFormatException;
 
 public class ReadFromFileImpl implements ReadFromFile {
+
+    private static String NL = System.getProperty("line.separator");
 
     public ArrayList<ExpenditureListOfUser> readUsersAndExpendituresFromTxtFile(String wayToFile) throws DAOException {
         ArrayList<ExpenditureListOfUser> usersAndExpenditures = new ArrayList<>();
@@ -58,27 +59,36 @@ public class ReadFromFileImpl implements ReadFromFile {
         return usersAndPasswords;
     }
 
-    public static void replaceStringInFile(String fileName, String username, String replacement) throws DAOException {
+    private static String[] readWithBufferReaderAndReturnArrOfStrings(String fileName, String username) throws DAOException {
+        String resLine = "";
+        String fileContent = "";
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileName));
-            String line = "";
-            String line2 = "";
-            String fileContent = "";
-            String NL = System.getProperty("line.separator");
-            while ((line = br.readLine()) != null) {
-                fileContent = fileContent + line + NL;
-                if (line.startsWith(username)) {
-                    line2 = line;
+            String tmpLine = "";
+            while ((tmpLine = br.readLine()) != null) {
+                fileContent = fileContent.concat(tmpLine).concat(NL);
+                if (tmpLine.startsWith(username)) {
+                    resLine = tmpLine;
                 }
             }
             br.close();
-            fileContent = fileContent.replaceAll(line2, replacement);
-            String line3 = null;
+        } catch (IOException e) {
+            throw new DAOException(e);
+        }
+        return new String[]{resLine, fileContent};
+    }
+
+    public static void replaceStringInFile(String fileName, String username, String replacement) throws DAOException {
+        try {
+            String oldLine = readWithBufferReaderAndReturnArrOfStrings(fileName, username)[0];
+            String fileContent = readWithBufferReaderAndReturnArrOfStrings(fileName, username)[1];
+            fileContent = fileContent.replaceAll(oldLine, replacement);
+            String tmpLine;
             String fileContent2 = "";
             BufferedReader br2 = new BufferedReader(new StringReader(fileContent));
-            while ((line3 = br2.readLine()) != null) {
-                if (!line3.isEmpty()) {
-                    fileContent2 = fileContent2 + NL + line3;
+            while ((tmpLine = br2.readLine()) != null) {
+                if (!tmpLine.isEmpty()) {
+                    fileContent2 = fileContent2.concat(NL).concat(tmpLine);
                 }
             }
             BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
@@ -93,22 +103,12 @@ public class ReadFromFileImpl implements ReadFromFile {
 
     public static void changeStringInFileByAddingInTheEnd(String fileName, String username, String replacement) throws DAOException {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(fileName));
-            String line = "";
-            String line2 = "";
-            String FileContent = "";
-            String NL = System.getProperty("line.separator");
-            while ((line = br.readLine()) != null) {
-                FileContent = FileContent + line + NL;
-                if (line.startsWith(username)) {
-                    line2 = line;
-                }
-            }
-            br.close();
-            line = line2 + " " + replacement;
-            FileContent = FileContent.replaceAll(line2, line);
+            String oldLine = readWithBufferReaderAndReturnArrOfStrings(fileName, username)[0];
+            String fileContent = readWithBufferReaderAndReturnArrOfStrings(fileName, username)[1];
+            String newLine = oldLine + " " + replacement;
+            fileContent = fileContent.replaceAll(oldLine, newLine);
             BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
-            bw.write(FileContent);
+            bw.write(fileContent);
             bw.close();
         } catch (IOException e) {
             throw new DAOException(e);
@@ -118,21 +118,11 @@ public class ReadFromFileImpl implements ReadFromFile {
 
     public static void changeStringInFileByRemovingNumber(String fileName, String username, String numberToDelete) throws DAOException {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(fileName));
-            String line = "";
-            String line2 = "";
-            String FileContent = "";
-            String NL = System.getProperty("line.separator");
-            while ((line = br.readLine()) != null) {
-                FileContent = FileContent + line + NL;
-                if (line.startsWith(username)) {
-                    line2 = line;
-                }
-            }
-            br.close();
+            String oldLine = readWithBufferReaderAndReturnArrOfStrings(fileName, username)[0];
+            String fileContent = readWithBufferReaderAndReturnArrOfStrings(fileName, username)[1];
             StringBuilder sb = new StringBuilder();
             boolean tmp = true;
-            for (String word : line2.split("\\s+")) {
+            for (String word : oldLine.split("\\s+")) {
                 if (word.equalsIgnoreCase(numberToDelete) && tmp) {
                     sb.append(word.replace(numberToDelete, ""));
                     tmp = false;
@@ -141,10 +131,10 @@ public class ReadFromFileImpl implements ReadFromFile {
                 }
                 sb.append(" ");
             }
-            line = sb.toString();
-            FileContent = FileContent.replace(line2, line);
+            String newLine = sb.toString();
+            fileContent = fileContent.replace(oldLine, newLine);
             BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
-            bw.write(FileContent);
+            bw.write(fileContent);
             bw.close();
         } catch (IOException e) {
             throw new DAOException(e);
@@ -154,57 +144,34 @@ public class ReadFromFileImpl implements ReadFromFile {
 
     public static void changeStringInFileToZero(String fileName, String username) throws DAOException {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(fileName));
-            String line = "";
-            String line2 = "";
-            String FileContent = "";
-            String NL = System.getProperty("line.separator");
-            while ((line = br.readLine()) != null) {
-                FileContent = FileContent + line + NL;
-                if (line.startsWith(username)) {
-                    line2 = line;
-                }
-            }
-            br.close();
+            String oldLine = readWithBufferReaderAndReturnArrOfStrings(fileName, username)[0];
+            String fileContent = readWithBufferReaderAndReturnArrOfStrings(fileName, username)[1];
             StringBuilder sb = new StringBuilder();
             boolean tmp = true;
-            for (String word : line2.split("\\s+")) {
+            for (String word : oldLine.split("\\s+")) {
                 if (word.equalsIgnoreCase(username) && tmp) {
                     sb.append(word).append(" ").append(0.0);
                     tmp = false;
-                } else {
-                    sb.append("");
                 }
                 sb.append(" ");
             }
-            line = sb.toString();
-            FileContent = FileContent.replace(line2, line);
+            String newLine = sb.toString();
+            fileContent = fileContent.replace(oldLine, newLine);
             BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
-            bw.write(FileContent);
+            bw.write(fileContent);
             bw.close();
         } catch (IOException e) {
             throw new DAOException(e);
         }
-
     }
 
     public static void changeStringInFileByUpdatingNumber(String fileName, String username, String numberToUpdate, String otherNumber) throws DAOException {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(fileName));
-            String line = "";
-            String line2 = "";
-            String FileContent = "";
-            String NL = System.getProperty("line.separator");
-            while ((line = br.readLine()) != null) {
-                FileContent = FileContent + line + NL;
-                if (line.startsWith(username)) {
-                    line2 = line;
-                }
-            }
-            br.close();
+            String oldLine = readWithBufferReaderAndReturnArrOfStrings(fileName, username)[0];
+            String fileContent = readWithBufferReaderAndReturnArrOfStrings(fileName, username)[1];
             StringBuilder sb = new StringBuilder();
             boolean tmp = true;
-            for (String word : line2.split("\\s+")) {
+            for (String word : oldLine.split("\\s+")) {
                 if (word.equalsIgnoreCase(numberToUpdate) && tmp) {
                     sb.append(word.replace(numberToUpdate, otherNumber));
                     tmp = false;
@@ -213,10 +180,10 @@ public class ReadFromFileImpl implements ReadFromFile {
                 }
                 sb.append(" ");
             }
-            line = sb.toString();
-            FileContent = FileContent.replace(line2, line);
+            String newLine = sb.toString();
+            fileContent = fileContent.replace(oldLine, newLine);
             BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
-            bw.write(FileContent);
+            bw.write(fileContent);
             bw.close();
         } catch (IOException e) {
             throw new DAOException(e);

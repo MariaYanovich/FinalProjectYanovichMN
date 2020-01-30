@@ -28,7 +28,7 @@ public class Menu {
                     System.out.println("Input username and password:");
                     commands.signIn(scan.next(), scan.next());
                     if (commands.isInSystem())
-                        while (!"7".equals(s)) {
+                        while (!"7".equals(s) && !"6".equals(s)) {
                             System.out.println("1. For add expenditure input 1: ");
                             System.out.println("2. For removing expenditure input 2: ");
                             System.out.println("3. For clearing all expenditures input 3: ");
@@ -43,7 +43,6 @@ public class Menu {
                                 System.out.println("Incorrect input");
                             }
                             switch (x) {
-
                                 case 1:
                                     System.out.println("\nEnter expenditure: ");
                                     s = scan.next();
@@ -94,6 +93,7 @@ public class Menu {
                                     commands.signOut();
                             }
                         }
+
                     break;
                 case 2:
                     System.out.println("Input username and password:");
