@@ -34,11 +34,11 @@ public class ExpenditureListOfUser implements Serializable {
     }
 
     public void addExpenditure(Expenditure expenditure) {
-        this.expendituresOfUser.add(this.expendituresOfUser.size(), expenditure);
+        expendituresOfUser.add(expendituresOfUser.size(), expenditure);
     }
 
     public void deleteExpenditure(Expenditure expenditure) {
-        this.expendituresOfUser.remove(expenditure);
+        expendituresOfUser.remove(expenditure);
     }
 
     public void cleanAllExpenditures() {

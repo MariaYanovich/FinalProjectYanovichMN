@@ -1,8 +1,6 @@
 package by.training.finance_counter.viewer;
 
-
 import by.training.finance_counter.controller.Commands;
-
 
 import java.util.Scanner;
 

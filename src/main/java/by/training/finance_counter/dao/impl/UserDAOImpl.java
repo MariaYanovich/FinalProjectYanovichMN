@@ -54,7 +54,6 @@ public class UserDAOImpl implements UserDAO {
     }
 
     public AllUsersLists getAllUsersLists() throws DAOException {
-
         try {
             if (allUsersLists == null) {
                 throw new DAOException("Files with data about users are empty");
@@ -86,7 +85,6 @@ public class UserDAOImpl implements UserDAO {
             } else {
                 throw new DAOException("Not authorized or input files are empty");
             }
-
         } catch (IOException e) {
             throw new DAOException(e);
         }
@@ -126,7 +124,6 @@ public class UserDAOImpl implements UserDAO {
             bw2.write("\n" + username + " " + 0);
             bw1.close();
             bw2.close();
-
             ArrayList<Expenditure> arrayList = new ArrayList<>();
             ExpenditureListOfUser user = new ExpenditureListOfUser(new User(username, password), arrayList);
             allUsersLists.getListOfUsersAndExpenditures().

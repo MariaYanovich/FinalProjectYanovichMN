@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
 public class AllUsersLists {
     private ArrayList<User> listOfUsersAndPasswords;
     private ArrayList<ExpenditureListOfUser> listOfUsersAndExpenditures;

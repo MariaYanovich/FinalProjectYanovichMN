@@ -15,6 +15,3 @@ by\training\finance_counter\runner\Main.class
 by\training\finance_counter\bean\AllUsersLists.class
 by\training\finance_counter\bean\User.class
 by\training\finance_counter\dao\impl\ReadFromFileImpl.class
-by\training\finance_counter\service\exception\ServiceException.class
-by\training\finance_counter\dao\factory\DAOFactory.class
-by\training\finance_counter\dao\exception\DAOException.class
